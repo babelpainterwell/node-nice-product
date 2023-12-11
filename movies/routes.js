@@ -90,9 +90,9 @@ function MovieRoutes(app) {
       const movies = await dao.findMovieByUser(userId);
 
       // If no movies are found, you might want to handle that as well
-      if (!movies || movies.length === 0) {
-        return res.status(404).send("No movies found for the specified user.");
-      }
+      //   if (!movies || movies.length === 0) {
+      //     return res.status(404).send("No movies found for the specified user.");
+      //   }
 
       res.json(movies);
     } catch (error) {
