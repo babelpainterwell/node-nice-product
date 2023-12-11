@@ -7,14 +7,24 @@ import LikesRoutes from "./likes/routes.js";
 import FollowsRoutes from "./follows/routes.js";
 import ReviewRoutes from "./reviews/routes.js";
 import MovieRoutes from "./movies/routes.js";
+import "dotenv/config.js";
 
-mongoose.connect("mongodb://localhost:27017/movie_house");
+// const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/movie_house";
+// const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:3000";
+// const SESSION_SECRET = process.env.SESSION_SECRET || "any string";
+// const PORT = process.env.PORT || 4000;
+
+// mongoose.connect(DB_URL);
+
+const CONNECTION_STRING =
+  process.env.DB_CONNECTION_STRING || "mongodb://127.0.0.1:27017/movie_house";
+mongoose.connect(CONNECTION_STRING);
 
 const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
   })
 );
 
@@ -23,6 +33,14 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: false,
 };
+if (process.env.NODE_ENV !== "development") {
+  sessionOptions.proxy = true;
+  sessionOptions.cookie = {
+    sameSite: "none",
+    secure: true,
+  };
+}
+
 app.use(session(sessionOptions));
 
 app.use(express.json());
@@ -32,4 +50,4 @@ FollowsRoutes(app);
 ReviewRoutes(app);
 MovieRoutes(app);
 
-app.listen(4000);
+app.listen(process.env.PORT || 4000);
