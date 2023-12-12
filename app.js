@@ -24,9 +24,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    // origin: process.env.FRONTEND_URL,
-    origin:
-      "https://6577e0601f78d20008318e4b--vermillion-basbousa-3a5cbb.netlify.app/",
+    origin: process.env.FRONTEND_URL,
   })
 );
 
